@@ -75,7 +75,7 @@ puts 'Starting'
 oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_CLIENT_ID'], ENV['FACEBOOK_CLIENT_SECRET'], nil)
 k = Koala::Facebook::API.new(oauth.get_app_access_token)
 
-last_post = Time.now.to_i - 86400
+last_post = Time.now.to_i
 
 while true
   fbpage = k.get_object("#{ENV['FACEBOOK_PAGE']}?fields=posts.since(#{last_post}){story,message,id,created_time,picture,full_picture,link,permalink_url,properties,source,description,caption,name,status_type},picture{url},name,username,link")
