@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'dotenv'
 Dotenv.load
 require 'koala'
@@ -68,6 +70,8 @@ def send_post(post, author_name, author_handle, author_pic, author_link)
 
 end
 
+puts 'Starting'
+
 oauth = Koala::Facebook::OAuth.new(ENV['FACEBOOK_CLIENT_ID'], ENV['FACEBOOK_CLIENT_SECRET'], nil)
 k = Koala::Facebook::API.new(oauth.get_app_access_token)
 
@@ -86,3 +90,5 @@ while true
 
   sleep 20
 end
+
+puts 'Finished'
