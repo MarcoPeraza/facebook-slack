@@ -5,6 +5,8 @@ Dotenv.load
 require 'koala'
 require 'httparty'
 
+$stdout.sync = true
+
 def send_post(post, author_name, author_handle, author_pic, author_link)
 
   puts post
