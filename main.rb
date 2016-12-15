@@ -7,6 +7,8 @@ require 'httparty'
 
 $stdout.sync = true
 
+FACEBOOK_ICON_URL = 'https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png'
+
 def send_post(post, author_name, author_handle, author_pic, author_link)
 
   puts post
@@ -20,7 +22,9 @@ def send_post(post, author_name, author_handle, author_pic, author_link)
       author_subname: '@' + author_handle,
       author_link: author_link,
       #color: '#3B5998', #fb blue
-      ts: DateTime.parse(post['created_time']).strftime('%s')
+      ts: DateTime.parse(post['created_time']).strftime('%s'),
+      footer_icon: FACEBOOK_ICON_URL,
+      footer: 'Facebook'
     }
   ]
 
@@ -67,8 +71,8 @@ def send_post(post, author_name, author_handle, author_pic, author_link)
   end
 
   HTTParty.post(ENV['SLACK_INCOMING_WEBHOOK'], body: {
-    username: 'fACEBOOK',
-    icon_url: 'https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png',
+    username: 'facebook',
+    icon_url: FACEBOOK_ICON_URL,
     channel: ENV['SLACK_CHANNEL'],
     attachments: attachments,
   }.to_json)
