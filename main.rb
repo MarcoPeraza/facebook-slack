@@ -37,6 +37,7 @@ def send_post(post, author_name, author_handle, author_pic, author_link)
 
 
   case post['status_type']
+
   when 'added_photos'
     attachments[0].merge!({
       image_url: post['full_picture'],
@@ -44,13 +45,15 @@ def send_post(post, author_name, author_handle, author_pic, author_link)
     })
 
   when 'added_video'
-    attachments += [
-      {
-        title: "<#{post['source']}|Click to see video>",
-        title_link: post['source'],
-        image_url: post['full_picture']
-      }
-    ]
+    if post['full_picture'] || post['source']
+      attachments += [
+        {
+          title: "Click to see video",
+          title_link: post['permalink_url'],
+          image_url: post['full_picture']
+        }
+      ]
+    end
 
   when 'shared_story'
     attachments += [
