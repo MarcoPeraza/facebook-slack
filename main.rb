@@ -67,7 +67,7 @@ def send_post(post, author_name, author_handle, author_pic, author_link)
   end
 
   HTTParty.post(ENV['SLACK_INCOMING_WEBHOOK'], body: {
-    username: 'Facebook',
+    username: 'fACEBOOK',
     icon_url: 'https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png',
     channel: ENV['SLACK_CHANNEL'],
     attachments: attachments,
