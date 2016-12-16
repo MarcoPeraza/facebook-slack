@@ -9,7 +9,9 @@ $stdout.sync = true
 
 FACEBOOK_ICON_URL = 'https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png'
 
-def send_post(post, author_name, author_handle, author_pic, author_link)
+Author = Struct.new(:name, :handle, :pic_url, :link)
+
+def send_post(post, author)
 
   puts post
   puts "\n"
@@ -17,10 +19,10 @@ def send_post(post, author_name, author_handle, author_pic, author_link)
   attachments = [
     {
       pretext: post['permalink_url'],
-      author_icon: author_pic,
-      author_name: author_name,
-      author_subname: '@' + author_handle,
-      author_link: author_link,
+      author_icon: author.pic_url,
+      author_name: author.name,
+      author_subname: '@' + author.handle,
+      author_link: author.link,
       #color: '#3B5998', #fb blue
       ts: DateTime.parse(post['created_time']).strftime('%s'),
       footer_icon: FACEBOOK_ICON_URL,
@@ -89,9 +91,11 @@ last_post = Time.now.to_i
 while true
   fbpage = k.get_object("#{ENV['FACEBOOK_PAGE']}?fields=posts.since(#{last_post}){story,message,id,created_time,picture,full_picture,link,permalink_url,properties,source,description,caption,name,status_type},picture{url},name,username,link")
 
+  author = Author.new(fbpage['name'], fbpage['username'], fbpage['picture']['data']['url'], fbpage['link'])
+
   if fbpage.include?('posts')
     fbpage['posts']['data'].reverse_each do |p|
-      send_post(p, fbpage['name'], fbpage['username'], fbpage['picture']['data']['url'], fbpage['link'])
+      send_post(p, author)
 
       last_post = [last_post, DateTime.parse(p['created_time']).to_time.to_i].max
     end
